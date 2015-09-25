@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0eb7c6740cfc4d8d99392b771ac22711" Name="Diagram1">
+        <EntityTypeShape EntityType="VideoGamesModel.Developer" Width="1.5" PointX="6.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VideoGamesModel.Game" Width="1.5" PointX="4.375" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VideoGamesModel.Genre" Width="1.5" PointX="1.875" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VideoGamesModel.Hardware" Width="1.5" PointX="12.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VideoGamesModel.ParentCompany" Width="1.5" PointX="12.5" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="VideoGamesModel.PlatformGame" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VideoGamesModel.Platform" Width="1.5" PointX="9" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VideoGamesModel.Rating" Width="1.5" PointX="1.875" PointY="3.25" IsExpanded="true" />
+        <AssociationConnector Association="VideoGamesModel.Games_fk" ManuallyRouted="false" />
+        <AssociationConnector Association="VideoGamesModel.Games_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="VideoGamesModel.Games_Fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="VideoGamesModel.PlatformGames_fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="VideoGamesModel.Platforms_fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="VideoGamesModel.Platforms_fk" ManuallyRouted="false" />
+        <AssociationConnector Association="VideoGamesModel.PlatformGames_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="VideoGamesModel.PlatformDevelopers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,59 @@
+﻿@model PagedList.IPagedList<VideoGames.Models.ParentCompany>
+    @using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Parent Companies";
+}
+
+<h2>Parent Companies</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success btn-sm", @style = "color:white" })
+</p>
+
+@using (Html.BeginForm("Index", "ParentCompanies", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" value="Search">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </span>
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Company Name" })
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div>
+    <br />
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Company Name", "Index", new { sortOrder = ViewBag.CompanySortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.CompanyID }, new { @class = "btn btn-success", @style = "color:white" }) 
+            @Html.ActionLink("Details", "Details", new { id = item.CompanyID }, new { @class = "btn btn-default", @style = "color:white" }) 
+            @Html.ActionLink("Delete", "Delete", new { id = item.CompanyID }, new { @class = "btn btn-danger", @style = "color:white" })
+
+</td>
+    </tr>
+}
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

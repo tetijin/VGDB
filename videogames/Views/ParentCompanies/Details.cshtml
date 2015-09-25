@@ -1,0 +1,46 @@
+﻿@model VideoGames.Models.ParentCompany
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ParentCompany</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+
+    </dl>
+    <div id="accordion">
+        <h3>Platforms @Html.DisplayFor(model => model.CompanyName) has released </h3>
+        <div>
+        <table class="table">
+            <tr>
+                <th>System</th>
+
+                <th>Release Date</th>
+            </tr>
+
+            @foreach (var platform in Model.Platforms)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => platform.PlatformName)</td>
+                    <td>@Html.DisplayFor(modelItem => platform.ReleaseDate)</td>
+                </tr>
+            }
+        </table>
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CompanyID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

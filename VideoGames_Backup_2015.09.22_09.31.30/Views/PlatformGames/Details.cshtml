@@ -1,0 +1,42 @@
+﻿@model VideoGames.Models.PlatformGame
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PlatformGame</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Game.GameTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Game.GameTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Platform.PlatformName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Platform.PlatformName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

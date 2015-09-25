@@ -1,0 +1,84 @@
+﻿@model PagedList.IPagedList<VideoGames.Models.Game>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Games";
+}
+
+<h2>Games</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success btn-sm", @style = "color:white" })
+</p>
+
+@using (Html.BeginForm("Index", "Games", FormMethod.Get))
+{
+ <div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <span class="input-group-btn">
+          <button class="btn btn-default" type="submit" value="Search">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          </button>
+      </span>
+      @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Title" })
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div>
+ <br />
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            MSRP
+        </th>
+        <th>
+            @Html.ActionLink("Developer", "Index", new { sortOrder = ViewBag.DeveloperSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Genre", "Index", new { sortOrder = ViewBag.GenreSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Rating", "Index", new { sortOrder = ViewBag.RatingSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(wibble => item.GameTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MSRP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Developer.DeveloperName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre.GenreName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating.RatingType)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.GameID }, new { @class = "btn btn-success", @style = "color:white" })
+                @Html.ActionLink("Details", "Details", new { id = item.GameID }, new { @class = "btn btn-default", @style = "color:white" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.GameID }, new { @class = "btn btn-danger", @style = "color:white" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

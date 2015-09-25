@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VideoGamesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Developer">
+          <Key>
+            <PropertyRef Name="DeveloperID" />
+          </Key>
+          <Property Name="DeveloperID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeveloperName" Type="varchar" MaxLength="100" />
+          <Property Name="DateEstablished" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="GameID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeveloperID" Type="int" Nullable="false" />
+          <Property Name="GameTitle" Type="varchar" MaxLength="100" />
+          <Property Name="GenreID" Type="int" Nullable="false" />
+          <Property Name="RatingID" Type="int" Nullable="false" />
+          <Property Name="MSRP" Type="money" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GenreID" />
+          </Key>
+          <Property Name="GenreID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GenreName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Hardware">
+          <Key>
+            <PropertyRef Name="HardwareID" />
+          </Key>
+          <Property Name="HardwareID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HardwareType" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="ParentCompany">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="PlatformDevelopers">
+          <Key>
+            <PropertyRef Name="DeveloperID" />
+            <PropertyRef Name="PlatformID" />
+          </Key>
+          <Property Name="DeveloperID" Type="int" Nullable="false" />
+          <Property Name="PlatformID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlatformGames">
+          <Key>
+            <PropertyRef Name="PlatformID" />
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="PlatformID" Type="int" Nullable="false" />
+          <Property Name="GameID" Type="int" Nullable="false" />
+          <Property Name="ReleaseDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Platforms">
+          <Key>
+            <PropertyRef Name="PlatformID" />
+          </Key>
+          <Property Name="PlatformID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="PlatformName" Type="varchar" MaxLength="100" />
+          <Property Name="HardwareID" Type="int" Nullable="false" />
+          <Property Name="ReleaseDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Ratings">
+          <Key>
+            <PropertyRef Name="RatingID" />
+          </Key>
+          <Property Name="RatingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RatingType" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="Games_fk">
+          <End Role="Developer" Type="Self.Developer" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Developer">
+              <PropertyRef Name="DeveloperID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="DeveloperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Games_fk1">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="GenreID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="GenreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Games_Fk2">
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ratings">
+              <PropertyRef Name="RatingID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="RatingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlatformDevelopers_fk1">
+          <End Role="Developer" Type="Self.Developer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PlatformDevelopers" Type="Self.PlatformDevelopers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Developer">
+              <PropertyRef Name="DeveloperID" />
+            </Principal>
+            <Dependent Role="PlatformDevelopers">
+              <PropertyRef Name="DeveloperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlatformDevelopers_fk2">
+          <End Role="Platforms" Type="Self.Platforms" Multiplicity="1" />
+          <End Role="PlatformDevelopers" Type="Self.PlatformDevelopers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Platforms">
+              <PropertyRef Name="PlatformID" />
+            </Principal>
+            <Dependent Role="PlatformDevelopers">
+              <PropertyRef Name="PlatformID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlatformGames_fk1">
+          <End Role="Platforms" Type="Self.Platforms" Multiplicity="1" />
+          <End Role="PlatformGames" Type="Self.PlatformGames" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Platforms">
+              <PropertyRef Name="PlatformID" />
+            </Principal>
+            <Dependent Role="PlatformGames">
+              <PropertyRef Name="PlatformID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlatformGames_fk2">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="PlatformGames" Type="Self.PlatformGames" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="PlatformGames">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Platforms_fk">
+          <End Role="ParentCompany" Type="Self.ParentCompany" Multiplicity="1" />
+          <End Role="Platforms" Type="Self.Platforms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParentCompany">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Platforms">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Platforms_fk2">
+          <End Role="Hardware" Type="Self.Hardware" Multiplicity="1" />
+          <End Role="Platforms" Type="Self.Platforms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hardware">
+              <PropertyRef Name="HardwareID" />
+            </Principal>
+            <Dependent Role="Platforms">
+              <PropertyRef Name="HardwareID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VideoGamesModelStoreContainer">
+          <EntitySet Name="Developer" EntityType="Self.Developer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hardware" EntityType="Self.Hardware" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParentCompany" EntityType="Self.ParentCompany" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlatformDevelopers" EntityType="Self.PlatformDevelopers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlatformGames" EntityType="Self.PlatformGames" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Platforms" EntityType="Self.Platforms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Games_fk" Association="Self.Games_fk">
+            <End Role="Developer" EntitySet="Developer" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="Games_fk1" Association="Self.Games_fk1">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="Games_Fk2" Association="Self.Games_Fk2">
+            <End Role="Ratings" EntitySet="Ratings" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="PlatformDevelopers_fk1" Association="Self.PlatformDevelopers_fk1">
+            <End Role="Developer" EntitySet="Developer" />
+            <End Role="PlatformDevelopers" EntitySet="PlatformDevelopers" />
+          </AssociationSet>
+          <AssociationSet Name="PlatformDevelopers_fk2" Association="Self.PlatformDevelopers_fk2">
+            <End Role="Platforms" EntitySet="Platforms" />
+            <End Role="PlatformDevelopers" EntitySet="PlatformDevelopers" />
+          </AssociationSet>
+          <AssociationSet Name="PlatformGames_fk1" Association="Self.PlatformGames_fk1">
+            <End Role="Platforms" EntitySet="Platforms" />
+            <End Role="PlatformGames" EntitySet="PlatformGames" />
+          </AssociationSet>
+          <AssociationSet Name="PlatformGames_fk2" Association="Self.PlatformGames_fk2">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="PlatformGames" EntitySet="PlatformGames" />
+          </AssociationSet>
+          <AssociationSet Name="Platforms_fk" Association="Self.Platforms_fk">
+            <End Role="ParentCompany" EntitySet="ParentCompany" />
+            <End Role="Platforms" EntitySet="Platforms" />
+          </AssociationSet>
+          <AssociationSet Name="Platforms_fk2" Association="Self.Platforms_fk2">
+            <End Role="Hardware" EntitySet="Hardware" />
+            <End Role="Platforms" EntitySet="Platforms" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VideoGamesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Developer">
+          <Key>
+            <PropertyRef Name="DeveloperID" />
+          </Key>
+          <Property Name="DeveloperID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateEstablished" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Games" Relationship="Self.Games_fk" FromRole="Developer" ToRole="Games" />
+          <NavigationProperty Name="Platforms" Relationship="Self.PlatformDevelopers" FromRole="Developer" ToRole="Platforms" />
+          <Property Name="DeveloperName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="GameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeveloperID" Type="Int32" Nullable="false" />
+          <Property Name="GenreID" Type="Int32" Nullable="false" />
+          <Property Name="RatingID" Type="Int32" Nullable="false" />
+          <Property Name="MSRP" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Developer" Relationship="Self.Games_fk" FromRole="Games" ToRole="Developer" />
+          <NavigationProperty Name="Genre" Relationship="Self.Games_fk1" FromRole="Games" ToRole="Genre" />
+          <NavigationProperty Name="Rating" Relationship="Self.Games_Fk2" FromRole="Games" ToRole="Ratings" />
+          <NavigationProperty Name="PlatformGames" Relationship="Self.PlatformGames_fk2" FromRole="Games" ToRole="PlatformGames" />
+          <Property Name="GameTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GenreID" />
+          </Key>
+          <Property Name="GenreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GenreName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Games" Relationship="Self.Games_fk1" FromRole="Genre" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="Hardware">
+          <Key>
+            <PropertyRef Name="HardwareID" />
+          </Key>
+          <Property Name="HardwareID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HardwareType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Platforms" Relationship="Self.Platforms_fk2" FromRole="Hardware" ToRole="Platforms" />
+        </EntityType>
+        <EntityType Name="ParentCompany">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Platforms" Relationship="Self.Platforms_fk" FromRole="ParentCompany" ToRole="Platforms" />
+        </EntityType>
+        <EntityType Name="PlatformGame">
+          <Key>
+            <PropertyRef Name="PlatformID" />
+            <PropertyRef Name="GameID" />
+          </Key>
+          <Property Name="PlatformID" Type="Int32" Nullable="false" />
+          <Property Name="GameID" Type="Int32" Nullable="false" />
+          <Property Name="ReleaseDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Game" Relationship="Self.PlatformGames_fk2" FromRole="PlatformGames" ToRole="Games" />
+          <NavigationProperty Name="Platform" Relationship="Self.PlatformGames_fk1" FromRole="PlatformGames" ToRole="Platforms" />
+        </EntityType>
+        <EntityType Name="Platform">
+          <Key>
+            <PropertyRef Name="PlatformID" />
+          </Key>
+          <Property Name="PlatformID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="HardwareID" Type="Int32" Nullable="false" />
+          <Property Name="ReleaseDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Hardware" Relationship="Self.Platforms_fk2" FromRole="Platforms" ToRole="Hardware" />
+          <NavigationProperty Name="ParentCompany" Relationship="Self.Platforms_fk" FromRole="Platforms" ToRole="ParentCompany" />
+          <NavigationProperty Name="PlatformGames" Relationship="Self.PlatformGames_fk1" FromRole="Platforms" ToRole="PlatformGames" />
+          <NavigationProperty Name="Developers" Relationship="Self.PlatformDevelopers" FromRole="Platforms" ToRole="Developer" />
+          <Property Name="PlatformName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="RatingID" />
+          </Key>
+          <Property Name="RatingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RatingType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Games" Relationship="Self.Games_Fk2" FromRole="Ratings" ToRole="Games" />
+        </EntityType>
+        <Association Name="Games_fk">
+          <End Role="Developer" Type="Self.Developer" Multiplicity="1" />
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Developer">
+              <PropertyRef Name="DeveloperID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="DeveloperID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Games_fk1">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="GenreID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="GenreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Games_Fk2">
+          <End Role="Ratings" Type="Self.Rating" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Games" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ratings">
+              <PropertyRef Name="RatingID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="RatingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlatformGames_fk2">
+          <End Role="Games" Type="Self.Game" Multiplicity="1" />
+          <End Role="PlatformGames" Type="Self.PlatformGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameID" />
+            </Principal>
+            <Dependent Role="PlatformGames">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Platforms_fk2">
+          <End Role="Hardware" Type="Self.Hardware" Multiplicity="1" />
+          <End Role="Platforms" Type="Self.Platform" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hardware">
+              <PropertyRef Name="HardwareID" />
+            </Principal>
+            <Dependent Role="Platforms">
+              <PropertyRef Name="HardwareID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Platforms_fk">
+          <End Role="ParentCompany" Type="Self.ParentCompany" Multiplicity="1" />
+          <End Role="Platforms" Type="Self.Platform" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParentCompany">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Platforms">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlatformGames_fk1">
+          <End Role="Platforms" Type="Self.Platform" Multiplicity="1" />
+          <End Role="PlatformGames" Type="Self.PlatformGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Platforms">
+              <PropertyRef Name="PlatformID" />
+            </Principal>
+            <Dependent Role="PlatformGames">
+              <PropertyRef Name="PlatformID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlatformDevelopers">
+          <End Role="Developer" Type="Self.Developer" Multiplicity="*" />
+          <End Role="Platforms" Type="Self.Platform" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="VideoGamesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Developers" EntityType="Self.Developer" />
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="Genres" EntityType="Self.Genre" />
+          <EntitySet Name="Hardwares" EntityType="Self.Hardware" />
+          <EntitySet Name="ParentCompanies" EntityType="Self.ParentCompany" />
+          <EntitySet Name="PlatformGames" EntityType="Self.PlatformGame" />
+          <EntitySet Name="Platforms" EntityType="Self.Platform" />
+          <EntitySet Name="Ratings" EntityType="Self.Rating" />
+          <AssociationSet Name="Games_fk" Association="Self.Games_fk">
+            <End Role="Developer" EntitySet="Developers" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="Games_fk1" Association="Self.Games_fk1">
+            <End Role="Genre" EntitySet="Genres" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="Games_Fk2" Association="Self.Games_Fk2">
+            <End Role="Ratings" EntitySet="Ratings" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="PlatformGames_fk2" Association="Self.PlatformGames_fk2">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="PlatformGames" EntitySet="PlatformGames" />
+          </AssociationSet>
+          <AssociationSet Name="Platforms_fk2" Association="Self.Platforms_fk2">
+            <End Role="Hardware" EntitySet="Hardwares" />
+            <End Role="Platforms" EntitySet="Platforms" />
+          </AssociationSet>
+          <AssociationSet Name="Platforms_fk" Association="Self.Platforms_fk">
+            <End Role="ParentCompany" EntitySet="ParentCompanies" />
+            <End Role="Platforms" EntitySet="Platforms" />
+          </AssociationSet>
+          <AssociationSet Name="PlatformGames_fk1" Association="Self.PlatformGames_fk1">
+            <End Role="Platforms" EntitySet="Platforms" />
+            <End Role="PlatformGames" EntitySet="PlatformGames" />
+          </AssociationSet>
+          <AssociationSet Name="PlatformDevelopers" Association="Self.PlatformDevelopers">
+            <End Role="Developer" EntitySet="Developers" />
+            <End Role="Platforms" EntitySet="Platforms" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VideoGamesModelStoreContainer" CdmEntityContainer="VideoGamesEntities">
+          <EntitySetMapping Name="Developers">
+            <EntityTypeMapping TypeName="VideoGamesModel.Developer">
+              <MappingFragment StoreEntitySet="Developer">
+                <ScalarProperty Name="DeveloperName" ColumnName="DeveloperName" />
+                <ScalarProperty Name="DeveloperID" ColumnName="DeveloperID" />
+                <ScalarProperty Name="DateEstablished" ColumnName="DateEstablished" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="VideoGamesModel.Game">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="GameTitle" ColumnName="GameTitle" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="DeveloperID" ColumnName="DeveloperID" />
+                <ScalarProperty Name="GenreID" ColumnName="GenreID" />
+                <ScalarProperty Name="RatingID" ColumnName="RatingID" />
+                <ScalarProperty Name="MSRP" ColumnName="MSRP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="VideoGamesModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="GenreID" ColumnName="GenreID" />
+                <ScalarProperty Name="GenreName" ColumnName="GenreName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hardwares">
+            <EntityTypeMapping TypeName="VideoGamesModel.Hardware">
+              <MappingFragment StoreEntitySet="Hardware">
+                <ScalarProperty Name="HardwareID" ColumnName="HardwareID" />
+                <ScalarProperty Name="HardwareType" ColumnName="HardwareType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParentCompanies">
+            <EntityTypeMapping TypeName="VideoGamesModel.ParentCompany">
+              <MappingFragment StoreEntitySet="ParentCompany">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlatformGames">
+            <EntityTypeMapping TypeName="VideoGamesModel.PlatformGame">
+              <MappingFragment StoreEntitySet="PlatformGames">
+                <ScalarProperty Name="PlatformID" ColumnName="PlatformID" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Platforms">
+            <EntityTypeMapping TypeName="VideoGamesModel.Platform">
+              <MappingFragment StoreEntitySet="Platforms">
+                <ScalarProperty Name="PlatformName" ColumnName="PlatformName" />
+                <ScalarProperty Name="PlatformID" ColumnName="PlatformID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="HardwareID" ColumnName="HardwareID" />
+                <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ratings">
+            <EntityTypeMapping TypeName="VideoGamesModel.Rating">
+              <MappingFragment StoreEntitySet="Ratings">
+                <ScalarProperty Name="RatingID" ColumnName="RatingID" />
+                <ScalarProperty Name="RatingType" ColumnName="RatingType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PlatformDevelopers" TypeName="VideoGamesModel.PlatformDevelopers" StoreEntitySet="PlatformDevelopers">
+            <EndProperty Name="Developer">
+              <ScalarProperty Name="DeveloperID" ColumnName="DeveloperID" />
+            </EndProperty>
+            <EndProperty Name="Platforms">
+              <ScalarProperty Name="PlatformID" ColumnName="PlatformID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

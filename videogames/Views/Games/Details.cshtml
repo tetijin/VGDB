@@ -1,0 +1,83 @@
+﻿@model VideoGames.Models.Game
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Game</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GameTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GameTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MSRP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MSRP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Developer.DeveloperName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Developer.DeveloperName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre.GenreName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genre.GenreName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rating.RatingType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rating.RatingType)
+        </dd>
+
+    </dl>
+
+
+
+    <div id="accordion">
+        <h3>@Html.DisplayFor(model => model.GameTitle) is available on:</h3>
+        <div>
+            <table class="table">
+                <tr>
+                    <th>Platform</th>
+
+                    <th>Release Date</th>
+                </tr>
+
+                @foreach (var platform in Model.PlatformGames)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => platform.Platform.PlatformName)</td>
+                        <td>@Html.DisplayFor(modelItem => platform.ReleaseDate)</td>
+                    </tr>
+                }
+                
+            </table>
+        </div>
+    </div>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.GameID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

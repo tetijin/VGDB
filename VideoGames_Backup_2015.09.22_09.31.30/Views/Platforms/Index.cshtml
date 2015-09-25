@@ -1,0 +1,78 @@
+﻿@model PagedList.IPagedList<VideoGames.Models.Platform>
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Platforms";
+}
+
+<h2>Platforms</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success btn-sm", @style = "color:white" })
+</p>
+
+@using (Html.BeginForm("Index", "Platforms", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" value="Search">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </span>
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder = "Platform" })
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div>
+    <br />
+}
+
+<table class="table">
+    <tr>
+        <th>
+            <!--When you click on the platform link, it sets the sortOrder variable to ViewBag.PlatformSortParm-->
+            @Html.ActionLink("Platform", "Index", new { sortOrder = ViewBag.PlatformSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Company", "Index", new { sortOrder = ViewBag.CompanySortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Hardware", "Index", new { sortOrder = ViewBag.HardwareSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Release Date
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlatformName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentCompany.CompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hardware.HardwareType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PlatformID }, new { @class = "btn btn-success", @style = "color:white" })
+                @Html.ActionLink("Details", "Details", new { id = item.PlatformID }, new { @class = "btn btn-default", @style = "color:black" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.PlatformID }, new { @class = "btn btn-danger", @style = "color:white" })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
